@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Инна Мартинова — Анимационные концепты</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F2EA;
+    --warm: #EDE5D8;
+    --ink: #1A1410;
+    --ink-dim: rgba(26,20,16,0.55);
+    --rose: #C4705A;
+    --rose-light: #E8A090;
+    --sage: #7A9E87;
+    --amber: #D4A85A;
+    --amber-light: #EDD28A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Cursor */
+  .cur { width:10px; height:10px; background:var(--rose); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .2s; mix-blend-mode:multiply; }
+  .cur-r { width:40px; height:40px; border:1.5px solid var(--rose); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s, height .3s; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:24px 56px;
+    display:flex; justify-content:space-between; align-items:center;
+    background:linear-gradient(to bottom, rgba(247,242,234,.97), transparent);
+  }
+  .logo { font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:var(--ink); letter-spacing:.02em; }
+  .logo span { color:var(--rose); font-style:normal; }
+  nav ul { list-style:none; display:flex; gap:36px; }
+  nav a { color:var(--ink-dim); text-decoration:none; font-size:12px; letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }
+  nav a:hover { color:var(--rose); }
+  .nav-arch { font-size:11px; padding:8px 20px; border:1px solid var(--ink-dim); color:var(--ink-dim); text-decoration:none; letter-spacing:.15em; text-transform:uppercase; transition:all .3s; }
+  .nav-arch:hover { border-color:var(--rose); color:var(--rose); }
+
+  /* HERO */
+  .hero {
+    min-height:100vh;
+    display:flex; align-items:center;
+    position:relative;
+    overflow:hidden;
+    padding:120px 56px 80px;
+  }
+
+  /* Animated background shapes */
+  .bg-shape {
+    position:absolute; border-radius:50%; filter:blur(80px); opacity:.25;
+    animation: float 12s ease-in-out infinite;
+  }
+  .bg-shape-1 { width:600px; height:600px; background:var(--rose-light); top:-100px; right:-100px; animation-delay:0s; }
+  .bg-shape-2 { width:400px; height:400px; background:var(--amber-light); bottom:-50px; left:100px; animation-delay:-4s; }
+  .bg-shape-3 { width:300px; height:300px; background:var(--sage); top:40%; left:40%; opacity:.15; animation-delay:-8s; }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(20px,-30px) scale(1.05); }
+    66% { transform: translate(-15px,20px) scale(.97); }
+  }
+
+  /* Film grain overlay */
+  .grain {
+    position:fixed; inset:0; pointer-events:none; z-index:200; opacity:.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  .hero-content { position:relative; max-width:700px; z-index:1; }
+
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:11px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--rose); margin-bottom:32px;
+  }
+  .hero-tag::before { content:''; width:28px; height:1.5px; background:var(--rose); }
+
+  h1 {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(48px,7vw,88px);
+    font-weight:400; line-height:1.05;
+    color:var(--ink); margin-bottom:32px;
+    letter-spacing:-.02em;
+  }
+  h1 em { font-style:italic; color:var(--rose); }
+
+  .hero-sub {
+    font-size:16px; line-height:1.8; color:var(--ink-dim);
+    max-width:520px; margin-bottom:16px;
+  }
+  .hero-micro {
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--ink-dim); opacity:.7; margin-bottom:52px;
+  }
+
+  .btn-primary {
+    display:inline-flex; align-items:center; gap:14px;
+    padding:18px 44px;
+    background:var(--ink); color:var(--cream);
+    text-decoration:none; font-size:12px; letter-spacing:.25em; text-transform:uppercase;
+    transition:all .4s; position:relative; overflow:hidden;
+  }
+  .btn-primary::before { content:''; position:absolute; inset:0; background:var(--rose); transform:translateX(-100%); transition:transform .4s cubic-bezier(.25,.46,.45,.94); }
+  .btn-primary:hover::before { transform:translateX(0); }
+  .btn-primary span { position:relative; z-index:1; }
+
+  /* Floating badge */
+  .hero-badge {
+    position:absolute; right:80px; top:50%;
+    transform:translateY(-50%);
+    width:160px; height:160px;
+    border:1px solid rgba(196,112,90,.3);
+    border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:6px;
+    animation: spinSlow 30s linear infinite;
+    z-index:1;
+  }
+  @keyframes spinSlow { to { transform:translateY(-50%) rotate(360deg); } }
+  .hero-badge-inner { animation: spinSlowReverse 30s linear infinite; }
+  @keyframes spinSlowReverse { to { transform:rotate(-360deg); } }
+  .badge-num { font-family:'Playfair Display',serif; font-size:36px; color:var(--rose); line-height:1; }
+  .badge-txt { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-dim); }
+
+  /* SECTIONS */
+  section { padding:100px 56px; }
+  .sec-label {
+    font-size:10px; letter-spacing:.4em; text-transform:uppercase;
+    color:var(--rose); margin-bottom:20px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .sec-label::before { content:''; width:28px; height:1.5px; background:var(--rose); }
+  .sec-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(32px,4.5vw,58px); font-weight:400;
+    line-height:1.1; margin-bottom:24px; letter-spacing:-.01em;
+  }
+  .sec-title em { font-style:italic; color:var(--rose); }
+
+  /* POSITIONING */
+  .positioning { background:var(--warm); }
+  .pos-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .pos-text { font-size:16px; line-height:1.9; color:var(--ink-dim); }
+  .pos-text p { margin-bottom:20px; }
+  .pos-quote {
+    font-family:'Playfair Display',serif; font-size:22px; font-style:italic;
+    color:var(--ink); line-height:1.6;
+    border-left:2px solid var(--rose); padding-left:28px; margin:36px 0;
+  }
+
+  /* Style orbs */
+  .style-orbs { display:flex; flex-direction:column; gap:20px; }
+  .orb {
+    display:flex; align-items:center; gap:20px;
+    padding:24px 28px; background:var(--cream);
+    border-radius:2px; position:relative;
+    transition:transform .3s;
+  }
+  .orb:hover { transform:translateX(8px); }
+  .orb-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .orb-dot.rose { background:var(--rose); }
+  .orb-dot.sage { background:var(--sage); }
+  .orb-dot.amber { background:var(--amber); }
+  .orb-dot.ink { background:var(--ink); }
+  .orb-text { font-size:14px; color:var(--ink); }
+
+  /* SERVICES */
+  .services { background:var(--cream); }
+  .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:60px; }
+  .srv {
+    background:var(--warm); padding:48px 36px;
+    position:relative; overflow:hidden; transition:background .4s;
+  }
+  .srv::before { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--rose); transition:width .5s; }
+  .srv:hover { background:#e8dfd0; }
+  .srv:hover::before { width:100%; }
+  .srv-n { font-family:'Playfair Display',serif; font-size:56px; color:rgba(26,20,16,.08); line-height:1; margin-bottom:20px; font-style:italic; }
+  .srv-title { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:14px; font-weight:400; }
+  .srv-desc { font-size:13px; line-height:1.8; color:var(--ink-dim); }
+
+  /* EMOTIONAL BLOCK */
+  .emotional {
+    background:var(--ink); color:var(--cream);
+    text-align:center; padding:120px 56px;
+    position:relative; overflow:hidden;
+  }
+  .emotional::before {
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 50%, rgba(196,112,90,.2) 0%, transparent 70%);
+  }
+  .emotional .sec-label { justify-content:center; color:var(--rose-light); }
+  .emotional .sec-label::before { background:var(--rose-light); }
+  .emotional .sec-title { color:var(--cream); position:relative; }
+  .emotional-text {
+    font-size:18px; line-height:1.9; color:rgba(247,242,234,.6);
+    max-width:600px; margin:0 auto; position:relative;
+  }
+  .emotional-text strong { color:var(--cream); font-weight:400; display:block; margin-bottom:12px; }
+
+  /* FOR WHOM */
+  .forwho { background:var(--warm); }
+  .forwho-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; margin-top:60px; }
+  .forwho-list { display:flex; flex-direction:column; gap:0; }
+  .forwho-item {
+    padding:24px 0; border-bottom:1px solid rgba(26,20,16,.1);
+    display:flex; align-items:center; gap:20px;
+    font-size:15px; transition:color .3s;
+  }
+  .forwho-item:hover { color:var(--rose); }
+  .forwho-item::before { content:'→'; color:var(--rose); font-size:14px; }
+
+  .forwho-desc { font-size:15px; line-height:1.9; color:var(--ink-dim); }
+  .forwho-desc p { margin-bottom:20px; }
+
+  /* FORMAT */
+  .format { background:var(--cream); }
+  .format-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3px; margin-top:60px; }
+  .fmt {
+    background:var(--warm); padding:40px 36px;
+    position:relative; transition:background .3s;
+  }
+  .fmt:hover { background:#e5ddd0; }
+  .fmt-icon { font-size:28px; margin-bottom:16px; }
+  .fmt-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:400; margin-bottom:10px; }
+  .fmt-desc { font-size:13px; color:var(--ink-dim); line-height:1.7; }
+
+  /* CTA */
+  .cta-section {
+    background:var(--cream); text-align:center; padding:120px 56px;
+    position:relative; overflow:hidden;
+  }
+  .cta-section::before {
+    content:'АНИМАЦИЯ';
+    position:absolute; font-family:'Playfair Display',serif;
+    font-size:180px; font-weight:700; font-style:italic;
+    color:rgba(196,112,90,.05); top:50%; left:50%;
+    transform:translate(-50%,-50%); white-space:nowrap; pointer-events:none;
+  }
+  .cta-section .sec-title { position:relative; }
+  .cta-sub {
+    font-size:15px; color:var(--ink-dim); line-height:1.8;
+    max-width:480px; margin:0 auto 52px; position:relative;
+  }
+  .cta-btns { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; position:relative; }
+  .btn-sec {
+    display:inline-flex; align-items:center; gap:12px;
+    padding:16px 40px; border:1px solid rgba(26,20,16,.25);
+    color:var(--ink-dim); text-decoration:none; font-size:12px;
+    letter-spacing:.2em; text-transform:uppercase; transition:all .4s;
+  }
+  .btn-sec:hover { border-color:var(--rose); color:var(--rose); }
+
+  /* Cross-link banner */
+  .crosslink {
+    background:var(--ink); color:var(--cream);
+    padding:36px 56px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .crosslink-text { font-size:14px; color:rgba(247,242,234,.6); letter-spacing:.05em; }
+  .crosslink-text strong { color:var(--cream); display:block; font-family:'Playfair Display',serif; font-size:18px; font-weight:400; font-style:italic; margin-bottom:4px; }
+  .crosslink a {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 32px; border:1px solid rgba(247,242,234,.25);
+    color:var(--cream); text-decoration:none; font-size:11px;
+    letter-spacing:.2em; text-transform:uppercase; transition:all .4s;
+    flex-shrink:0;
+  }
+  .crosslink a:hover { border-color:var(--rose); color:var(--rose); }
+
+  footer {
+    background:var(--warm); padding:28px 56px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid rgba(196,112,90,.15);
+  }
+  .footer-logo { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:var(--ink-dim); }
+  .footer-copy { font-size:11px; color:rgba(26,20,16,.35); }
+
+  .fade-up { opacity:0; transform:translateY(28px); transition:opacity .8s,transform .8s; }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:768px) {
+    nav { padding:20px 24px; } nav ul { display:none; }
+    section, .hero { padding:80px 24px; }
+    .pos-grid, .forwho-grid { grid-template-columns:1fr; gap:40px; }
+    .services-grid { grid-template-columns:1fr; }
+    .format-grid { grid-template-columns:1fr; }
+    .hero-badge { display:none; }
+    .crosslink { flex-direction:column; gap:20px; text-align:center; }
+    footer { flex-direction:column; gap:12px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<nav>
+  <div class="logo">Инна <span>Мартинова</span></div>
+  <ul>
+    <li><a href="#style">Стиль</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#contact">Контакт</a></li>
+  </ul>
+  <a href="index.html" class="nav-arch">→ Архитектура</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+  <div class="bg-shape bg-shape-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">AI Анимация · Визуальные концепты</div>
+    <h1>Анимационные<br>истории с<br><em>характером</em><br>и эмоцией</h1>
+    <p class="hero-sub">Я создаю визуальные концепции и короткие анимационные истории в стиле кинематографичной 2D/3D анимации — от идеи персонажа до сцен и живого мира.</p>
+    <p class="hero-micro">Character design / Story visuals / Animated concepts</p>
+    <a href="#contact" class="btn-primary"><span>Обсудить анимационный проект</span><span>→</span></a>
+  </div>
+
+  <div class="hero-badge">
+    <div class="hero-badge-inner">
+      <div class="badge-num">AI</div>
+      <div class="badge-txt">Студийная<br>анимация</div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section class="positioning" id="style">
+  <div class="pos-grid">
+    <div>
+      <div class="sec-label">Направление</div>
+      <h2 class="sec-title fade-up">Анимация как<br><em>язык эмоций</em></h2>
+      <blockquote class="pos-quote">«Каждый проект — это попытка превратить идею в живой мир.»</blockquote>
+      <div class="pos-text">
+        <p>Я создаю визуальные анимационные концепции, где важны не только персонажи, но и атмосфера, история и чувство, которое остаётся после просмотра.</p>
+        <p>Мягкая кинематографичная анимация, вдохновлённая современными студийными подходами мирового уровня.</p>
+      </div>
+    </div>
+    <div class="style-orbs fade-up">
+      <div class="orb"><div class="orb-dot rose"></div><div class="orb-text">Эмоциональные персонажи с характером</div></div>
+      <div class="orb"><div class="orb-dot sage"></div><div class="orb-text">Выразительные сцены и атмосфера</div></div>
+      <div class="orb"><div class="orb-dot amber"></div><div class="orb-text">Свет и цвет как часть истории</div></div>
+      <div class="orb"><div class="orb-dot ink"></div><div class="orb-text">Визуальный сторителлинг без слов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="sec-label">Что входит в работу</div>
+  <h2 class="sec-title fade-up">Что я создаю</h2>
+  <div class="services-grid">
+    <div class="srv fade-up">
+      <div class="srv-n">01</div>
+      <div class="srv-title">Разработка персонажей</div>
+      <div class="srv-desc">Character design — от концепта до визуального образа с характером, эмоцией и историей внутри.</div>
+    </div>
+    <div class="srv fade-up">
+      <div class="srv-n">02</div>
+      <div class="srv-title">Визуальные концепты сцен</div>
+      <div class="srv-desc">Атмосферные сцены, передающие настроение и нарратив — свет, цвет, композиция как язык.</div>
+    </div>
+    <div class="srv fade-up">
+      <div class="srv-n">03</div>
+      <div class="srv-title">Анимационные сториборды</div>
+      <div class="srv-desc">Раскадровка истории — от идеи до последовательности визуальных сцен с движением и темпом.</div>
+    </div>
+    <div class="srv fade-up">
+      <div class="srv-n">04</div>
+      <div class="srv-title">Короткие анимационные ролики</div>
+      <div class="srv-desc">Законченные анимационные истории — для брендов, медиапроектов и личных концептов.</div>
+    </div>
+    <div class="srv fade-up">
+      <div class="srv-n">05</div>
+      <div class="srv-title">Визуальный мир проекта</div>
+      <div class="srv-desc">Разработка визуального языка: стиль, палитра, атмосфера — всё, из чего складывается мир истории.</div>
+    </div>
+    <div class="srv fade-up" style="background:var(--rose);color:var(--cream);">
+      <div class="srv-n" style="color:rgba(247,242,234,.15);">✦</div>
+      <div class="srv-title" style="color:var(--cream);">Уровень мировых студий</div>
+      <div class="srv-desc" style="color:rgba(247,242,234,.75);">Студийная анимация без студийного бюджета. AI-инструменты + авторский взгляд = результат за 24–48 часов.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EMOTIONAL -->
+<section class="emotional">
+  <div class="sec-label">Смысл</div>
+  <h2 class="sec-title fade-up" style="margin-bottom:36px;">Истории, которые<br><em>остаются в памяти</em></h2>
+  <div class="emotional-text fade-up">
+    <strong>Хорошая анимация — это не движение.</strong>
+    Это чувство, которое остаётся после него.<br><br>
+    Я создаю визуальные миры, в которых персонажи и сцены передают эмоцию даже без слов.
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section class="forwho">
+  <div class="sec-label">Аудитория</div>
+  <h2 class="sec-title fade-up">Для кого это<br><em>направление</em></h2>
+  <div class="forwho-grid">
+    <div class="forwho-list fade-up">
+      <div class="forwho-item">Студии анимации</div>
+      <div class="forwho-item">Бренды и агентства</div>
+      <div class="forwho-item">Музыкальные проекты</div>
+      <div class="forwho-item">Медиа и стриминг</div>
+      <div class="forwho-item">Авторские творческие проекты</div>
+      <div class="forwho-item">Детский контент</div>
+    </div>
+    <div class="forwho-desc fade-up">
+      <p>Анимационные визуальные концепты — это не просто "мультики". Это полноценный продукт для брендов, историй и людей, которым важно оставить след в памяти зрителя.</p>
+      <p>Подходит для любого формата — от короткого рилса до полноценного сериального концепта.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAT -->
+<section class="format" id="format">
+  <div class="sec-label">Формат работы</div>
+  <h2 class="sec-title fade-up">Как мы работаем</h2>
+  <div class="format-grid">
+    <div class="fmt fade-up">
+      <div class="fmt-icon">✏️</div>
+      <div class="fmt-title">Концепты персонажей</div>
+      <div class="fmt-desc">Визуальный образ героя — характер, эмоции, мир внутри</div>
+    </div>
+    <div class="fmt fade-up">
+      <div class="fmt-icon">🎬</div>
+      <div class="fmt-title">Визуальные сцены</div>
+      <div class="fmt-desc">Атмосферные кадры с настроением, светом и историей</div>
+    </div>
+    <div class="fmt fade-up">
+      <div class="fmt-icon">🎞</div>
+      <div class="fmt-title">Короткие анимационные ролики</div>
+      <div class="fmt-desc">Законченная история от идеи до экрана</div>
+    </div>
+    <div class="fmt fade-up">
+      <div class="fmt-icon">🌍</div>
+      <div class="fmt-title">Визуальный мир проекта</div>
+      <div class="fmt-desc">Стиль, палитра, атмосфера — DNA вашей истории</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="sec-label" style="justify-content:center;margin-bottom:28px;">Начать проект</div>
+  <h2 class="sec-title" style="text-align:center;">Есть идея для<br><em>анимационного мира?</em></h2>
+  <p class="cta-sub">Я помогу превратить её в визуальный концепт или короткую анимационную историю. Напишите — и через 24 часа у вас будет первый визуальный результат.</p>
+  <div class="cta-btns">
+    <a href="https://t.me/martinova_ai" target="_blank" class="btn-primary"><span>Обсудить проект</span><span>→</span></a>
+    <a href="https://youtube.com/@Martinova_inna" target="_blank" class="btn-sec">YouTube канал</a>
+    <a href="https://rutube.ru/channel/70636084/" target="_blank" class="btn-sec">RuTube канал</a>
+  </div>
+</section>
+
+<!-- CROSSLINK -->
+<div class="crosslink">
+  <div class="crosslink-text">
+    <strong>Архитектурная визуализация</strong>
+    Фасады · Интерьеры · Анимация · Результат за 1 день
+  </div>
+  <a href="index.html">Смотреть направление →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">Инна Мартинова</div>
+  <div class="footer-copy">© 2025 AI Анимация · Москва &nbsp;|&nbsp; <a href="https://rutube.ru/channel/70636084/" target="_blank" style="color:var(--ink-dim);text-decoration:none;">RuTube</a></div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'), curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function l(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(l);})();
+document.querySelectorAll('a,button,.srv,.fmt,.orb').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';curR.style.width='64px';curR.style.height='64px';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curR.style.width='40px';curR.style.height='40px';});
+});
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});}));
+</script>
+</body>
+</html>
